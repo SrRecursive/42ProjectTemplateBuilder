@@ -176,23 +176,25 @@ all: $(NAME)
 
 # <--Library Creation--> #
 $(NAME): $(OBJ_SRC) $(OBJ_UTILS)
-\t@echo \"$(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully$(RESET)\"
+\t@echo \"✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)\"
 \t@ar rcs $(NAME) $(OBJ_SRC) $(OBJ_UTILS)
-\t@echo \"$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully$(RESET)\"
+\t@echo \"✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)\"
 
 # <-- Objects Creation --> #
 %.o: %.c
+\t@echo \"🔨 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)\"
 \t@$(CC) $(CFLAGS) -c $< -o $@
+\t@echo \"🧩 🦔 $(T_BLUE)$(BOLD)$@ $(RESET)$(T_GREEN)created!$(RESET)\"
 
 # <-- Objects Destruction --> #
 clean:
 \t@$(RM) $(OBJ_SRC) $(OBJ_UTILS)
-\t@echo \"$(T_YELLOW)$(BOLD)Objects $(RESET)$(T_RED)destroyed successfully$(RESET)\"
+\t@echo \"🗑️  🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)\"
 
 # <-- Clean Execution + {} Destruction --> #
 fclean: clean
 \t@$(RM) $(NAME) *.out
-\t@echo \"$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully$(RESET)\"
+\t@echo \"🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)\"
 
 # <-- Fclean Execution + All Execution --> #
 re: fclean all
@@ -234,9 +236,9 @@ run: re
 def main():
     project_name = input('Introduce the name of the project: ')
     # You can replace input() with your login
-    username = input('Introduce your login: ')
+    username = "ribana-b"
     # You can replace input() with your email
-    email = input('Introduce your email: ')
+    email = "ribana-b@student.42malaga.com"
     create_dirs()
     c_main_template(create_header("{}.c".format(project_name), username, email), project_name)
     c_header_template(create_header("{}.h".format(project_name), username, email), project_name)
