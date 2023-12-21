@@ -179,7 +179,7 @@ all: $(NAME)
 # <-- Program/Library Creation --> #
 $(NAME): $(OBJ)
 \t@echo \"✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)\"
-\t@# ar arc $(NAME) $(OBJ) # Use this if you want to create a library
+\t@# ar rcs $(NAME) $(OBJ) # Use this if you want to create a library
 \t@$(CC) $(OBJ) -o $(NAME) # Use this if you want to create a program
 \t@echo \"✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)\"
 \t@mkdir -p $(OBJ_DIR)
