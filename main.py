@@ -176,10 +176,11 @@ OBJ = $(OBJ_SRC) $(OBJ_UTILS)
 # <-- Main Target --> #
 all: $(NAME)
 
-# <--Library Creation--> #
+# <-- Program/Library Creation --> #
 $(NAME): $(OBJ)
 \t@echo \"✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)\"
-\t@$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+\t@# ar arc $(NAME) $(OBJ) # Use this if you want to create a library
+\t@$(CC) $(OBJ) -o $(NAME) # Use this if you want to create a program
 \t@echo \"✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)\"
 \t@mkdir -p $(OBJ_DIR)
 \t@mv $(OBJ) $(OBJ_DIR)
@@ -224,13 +225,8 @@ colortesting:
 \t@echo "$(T_CYAN)Bold Cyan text"
 \t@echo "$(T_WHITE)Bold White text$(RESET)"
 
-# <-- Run program -->
-run: re
-\t@$(CC) $(CFLAGS) $(NAME) -o $(NAME).out
-\t@./$(NAME).out
-
 # <-- Targets Declaration --> #
-.PHONY = all clean fclean re colortesting run
+.PHONY = all clean fclean re colortesting
 
 # ========================================================================== #
 '''.format(name, name, name))
