@@ -151,11 +151,12 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I ./include
 
 # <-- Remove Command -->#
-RM = rm -f
+RM = rm -rf
 
 # <-- Directories --> #
 SRC_DIR = src/
 UTILS_DIR = utils/
+OBJ_DIR = obj/
 
 # <-- Files --> #
 SRC_FILES = {}.c
@@ -168,6 +169,7 @@ UTILS = $(addprefix $(UTILS_DIR), $(UTILS_FILES))
 # <-- Objects --> #
 OBJ_SRC = $(SRC:%.c=%.o)
 OBJ_UTILS = $(UTILS:%.c=%.o)
+OBJ = $(OBJ_SRC) $(OBJ_UTILS)
 
 # ========================================================================== #
 
@@ -175,10 +177,12 @@ OBJ_UTILS = $(UTILS:%.c=%.o)
 all: $(NAME)
 
 # <--Library Creation--> #
-$(NAME): $(OBJ_SRC) $(OBJ_UTILS)
+$(NAME): $(OBJ)
 \t@echo \"✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)\"
-\t@ar rcs $(NAME) $(OBJ_SRC) $(OBJ_UTILS)
+\t@$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 \t@echo \"✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)\"
+\t@mkdir -p $(OBJ_DIR)
+\t@mv $(OBJ) $(OBJ_DIR)
 
 # <-- Objects Creation --> #
 %.o: %.c
@@ -188,7 +192,7 @@ $(NAME): $(OBJ_SRC) $(OBJ_UTILS)
 
 # <-- Objects Destruction --> #
 clean:
-\t@$(RM) $(OBJ_SRC) $(OBJ_UTILS)
+\t@$(RM) $(OBJ_DIR)
 \t@echo \"🗑️  🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)\"
 
 # <-- Clean Execution + {} Destruction --> #
