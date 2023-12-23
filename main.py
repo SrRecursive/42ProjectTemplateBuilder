@@ -167,9 +167,8 @@ SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 UTILS = $(addprefix $(UTILS_DIR), $(UTILS_FILES))
 
 # <-- Objects --> #
-OBJ_SRC = $(SRC:%.c=%.o)
-OBJ_UTILS = $(UTILS:%.c=%.o)
-OBJ = $(OBJ_SRC) $(OBJ_UTILS)
+OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC)) \\
+        $(patsubst $(UTILS_DIR)%.c, $(OBJ_DIR)%.o, $(UTILS))
 
 # ========================================================================== #
 
@@ -177,16 +176,23 @@ OBJ = $(OBJ_SRC) $(OBJ_UTILS)
 all: $(NAME)
 
 # <-- Program/Library Creation --> #
-$(NAME): $(OBJ)
+$(NAME): $(OBJ_DIR) $(OBJ)
 \t@echo \"✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)\"
 \t@# ar rcs $(NAME) $(OBJ) # Use this if you want to create a library
 \t@$(CC) $(OBJ) -o $(NAME) # Use this if you want to create a program
 \t@echo \"✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)\"
+
+# <-- Object Directory Creation --> #
+$(OBJ_DIR):
 \t@mkdir -p $(OBJ_DIR)
-\t@mv $(OBJ) $(OBJ_DIR)
 
 # <-- Objects Creation --> #
-%.o: %.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+\t@echo \"🔨 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)\"
+\t@$(CC) $(CFLAGS) -c $< -o $@
+\t@echo \"🧩 🦔 $(T_BLUE)$(BOLD)$@ $(RESET)$(T_GREEN)created!$(RESET)\"
+
+$(OBJ_DIR)%.o: $(UTILS_DIR)%.c
 \t@echo \"🔨 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)\"
 \t@$(CC) $(CFLAGS) -c $< -o $@
 \t@echo \"🧩 🦔 $(T_BLUE)$(BOLD)$@ $(RESET)$(T_GREEN)created!$(RESET)\"
