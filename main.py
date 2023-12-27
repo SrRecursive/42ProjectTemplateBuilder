@@ -12,13 +12,24 @@ def create_dirs():
 
 # Function to create the 42 header
 def create_header(filename, username, email):
-    # If the lenght of the email is too long it'll
-    # be trimmed to avoid overlapping with the 42
-    if (len(email) > 30):
-        email = email[:29].ljust(29)
+    filename_max_length = 46
+    if (len(filename) > filename_max_length):
+        filename = filename[:filename_max_length - 1 - len(filename)].ljust(filename_max_length - 1 - len(filename))
+
     author = "By: " + username + " <" + email + ">"
+    author_max_length = 46
+    if (len(author) > author_max_length):
+        author = author[:author_max_length - 1 - len(author)].ljust(author_max_length - 1 - len(author))
+
     creation_date = "Created: " + datetime.now().strftime("%Y/%m/%d %H:%M:%S") + " by " + username
+    creation_date_max_length = 46
+    if (len(creation_date) > creation_date_max_length):
+        creation_date = creation_date[:creation_date_max_length - 1 - len(creation_date)].ljust(creation_date_max_length - 1 - len(creation_date))
+
     update_date = "Updated: " + datetime.now().strftime("%Y/%m/%d %H:%M:%S") + " by " + username
+    update_date_max_length = 46
+    if (len(update_date) > update_date_max_length):
+        update_date = update_date[:update_date_max_length - 1 - len(update_date)].ljust(update_date_max_length - 1 - len(update_date))
 
     # First line
     header = "/* " + "*" * 74 + " */\n"
@@ -28,12 +39,12 @@ def create_header(filename, username, email):
 
     # Middle
     header += "/*" + " " * 57 + ":::" + " " * 5 + ":" * 8 + " " * 3 + "*/\n"
-    header += "/*" + " " * 3 + "{}".format(filename) + " " * (52 - len(filename)) + ":+:" + " " * 5 + ":+:" + " " * 4 + ":+:" + " " * 3+ "*/\n"
+    header += "/*" + " " * 3 + "{}".format(filename) + " " * (filename_max_length + 6 - len(filename)) + ":+:" + " " * 5 + ":+:" + " " * 4 + ":+:" + " " * 3+ "*/\n"
     header += "/*" + " " * 53 + "+:+ +:+" + " " * 8 + "+:+" + " " * 5 + "*/\n"
-    header += "/*" + " " * 3 + author + " " * (41 - len(username) - len(email)) + "+#+  +:+" + " " * 6 + "+#+" + " " * 8 + "*/\n"
+    header += "/*" + " " * 3 + author + " " * (author_max_length + 2 - len(author)) + "+#+  +:+" + " " * 6 + "+#+" + " " * 8 + "*/\n"
     header += "/*" + " " * 49 + "+#" * 5 + "+" + " " * 3 + "+#+" + " " * 10 + "*/\n"
-    header += "/*" + " " * 3 + creation_date + " " * (19 - len(username)) + "#+#" + " " * 4 + "#+#" + " " * 12 + "*/\n"
-    header += "/*" + " " * 3 + update_date + " " * (18 - len(username)) + "#" * 3 + " " * 3 + "#" * 10 + " " * 7 + "*/\n"
+    header += "/*" + " " * 3 + creation_date + " " * (creation_date_max_length + 5 - len(creation_date)) + "#+#" + " " * 4 + "#+#" + " " * 12 + "*/\n"
+    header += "/*" + " " * 3 + update_date + " " * (update_date_max_length + 4 - len(update_date)) + "#" * 3 + " " * 3 + "#" * 10 + " " * 7 + "*/\n"
 
     # Empty line
     header += "/* " + " " * 74 + " */\n"
@@ -241,9 +252,7 @@ colortesting:
 # Main function
 def main():
     project_name = input('Introduce the name of the project: ')
-    # You can replace input() with your login
     username = "ribana-b"
-    # You can replace input() with your email
     email = "ribana-b@student.42malaga.com"
     create_dirs()
     c_main_template(create_header("{}.c".format(project_name), username, email), project_name)
