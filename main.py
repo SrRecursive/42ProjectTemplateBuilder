@@ -188,11 +188,11 @@ RM := rm -rf
 # |                                Messages                                  | #
 # @--------------------------------------------------------------------------@ #
 
-COMPILE_MSG = @echo "$(CLEAR_LINE)$(T_WHITE)$(BOLD)Compiling $<...$(RESET)"
-OBJ_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(T_YELLOW)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)"
-OUTPUT_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)"
-CLEAN_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(T_YELLOW)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)"
-FCLEAN_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)"
+COMPILE_MSG = @echo "$(CLEAR_LINE)🧩 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)"
+OBJ_MSG = @echo "✅ 🦔 $(T_YELLOW)$(BOLD)$(NAME) Objects $(RESET)$(T_GREEN)created successfully!$(RESET)"
+OUTPUT_MSG = @echo "✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)"
+CLEAN_MSG = @echo "🗑️  🦔 $(T_YELLOW)$(BOLD)$(NAME) Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)"
+FCLEAN_MSG = @echo "🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)"
 
 # @--------------------------------------------------------------------------@ #
 # |                                 Targets                                  | #
