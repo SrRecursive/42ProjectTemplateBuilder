@@ -20,7 +20,7 @@ This is a Python script that builds a 42 Project Template for your C Projects.
 
 Clone the repository:
 ```Shell
-git clone https://github.com/SrRecursive/42ProjectTemplateBuilder
+git clone https://github.com/SrVariable/42ProjectTemplateBuilder
 ```
 
 Go inside the folder:
@@ -40,7 +40,6 @@ Introduce the name of the project: hello_world
 Introduce your login: ribana-b
 Introduce your email: ribana-b@student.42malaga.com
 ```
-**NOTE:** In Python 2.X you have to introduce them with double quotes.
 
 It will create the following directory tree in the current directory:
 
@@ -54,17 +53,27 @@ It will create the following directory tree in the current directory:
 | - Makefile
 ```
 
+> [!IMPORTANT]
+> In Python 2.X you have to introduce your login and email with double quotes.
+
+> [!TIP]
+> If you don't want to type this every time you can modify the inputs for strings
+> with your login and email in the file main.py
+> Check [personal](https://github.com/SrVariable/42ProjectTemplateBuilder/blob/personal/main.py) to see an example.
+
 ## Alias
 
-Since it creates the template in the current directory, you can create an alias to run the program, so you will be able to execute it anywhere.
+Since it creates the template in the current directory, you can create an alias to run
+the program, so you will be able to execute it anywhere.
 
-To do that, open your .bashrc or .zshrc with your favorite text editor.
+If you have zsh:
+
 ```Shell
-vim ~/.zshrc
+alias build="python ~/(path_of_repository)/42ProjectTemplateBuilder/main.py" >> ~/.zshrc
 ```
 
-Add at the end of the file the following line:
+If you have bash:
 
 ```Shell
-alias build ="python ~/(path_of_repository)/42ProjectTemplateBuilder/main.py"
-``` 
+alias build="python ~/(path_of_repository)/42ProjectTemplateBuilder/main.py" >> ~/.bashrc
+```

@@ -43,8 +43,8 @@ def create_header(filename, username, email):
     header += "/*" + " " * 53 + "+:+ +:+" + " " * 8 + "+:+" + " " * 5 + "*/\n"
     header += "/*" + " " * 3 + author + " " * (author_max_length + 2 - len(author)) + "+#+  +:+" + " " * 6 + "+#+" + " " * 8 + "*/\n"
     header += "/*" + " " * 49 + "+#" * 5 + "+" + " " * 3 + "+#+" + " " * 10 + "*/\n"
-    header += "/*" + " " * 3 + creation_date + " " * (creation_date_max_length + 5 - len(creation_date)) + "#+#" + " " * 4 + "#+#" + " " * 12 + "*/\n"
-    header += "/*" + " " * 3 + update_date + " " * (update_date_max_length + 4 - len(update_date)) + "#" * 3 + " " * 3 + "#" * 10 + " " * 7 + "*/\n"
+    header += "/*" + " " * 3 + creation_date + " " * (creation_date_max_length + 5 - len(creation_date)) + "#+#" + " " * 4 + "#+#" + " Malaga" + " " * 5 + "*/\n"
+    header += "/*" + " " * 3 + update_date + " " * (update_date_max_length + 4 - len(update_date)) + "#" * 3 + " " * 3 + "#" * 8 + ".com" + " " * 5 + "*/\n"
 
     # Empty line
     header += "/* " + " " * 74 + " */\n"
@@ -60,15 +60,14 @@ def c_main_template(header, name):
     file.write(
             '''\
 {}
-#include "../include/{}.h"
+#include "{}.h"
 
 int\tmain(void)
 {{
 \tribanab();
 \treturn (0);
 }}
-'''.format(header, name)
-            )
+'''.format(header, name))
     file.close
 
 # Function that generates the header file
@@ -80,15 +79,31 @@ def c_header_template(header, name):
 #ifndef {}_H
 # define {}_H
 
-/* <-- Defines Section --> */
+/* @------------------------------------------------------------------------@ */
+/* |                            Define Section                              | */
+/* @------------------------------------------------------------------------@ */
 
-/* <-- Libraries Section --> */
+/* @------------------------------------------------------------------------@ */
+/* |                            Include Section                             | */
+/* @------------------------------------------------------------------------@ */
 
 # include <stdio.h>
 
-/* <-- Structs Section --> */
+/* @------------------------------------------------------------------------@ */
+/* |                            Typedef Section                             | */
+/* @------------------------------------------------------------------------@ */
 
-/* <-- Functions Section --> */
+/* @------------------------------------------------------------------------@ */
+/* |                             Enum Section                               | */
+/* @------------------------------------------------------------------------@ */
+
+/* @------------------------------------------------------------------------@ */
+/* |                            Struct Section                              | */
+/* @------------------------------------------------------------------------@ */
+
+/* @------------------------------------------------------------------------@ */
+/* |                           Function Section                             | */
+/* @------------------------------------------------------------------------@ */
 
 void\tribanab(void);
 
@@ -102,7 +117,7 @@ def c_utils_template(header, name):
     file.write(
             '''\
 {}
-#include "../include/{}.h"
+#include "{}.h"
 
 void\tribanab(void)
 {{
@@ -117,136 +132,105 @@ def c_makefile_template(name):
     file = open(os.path.join("Makefile"), 'w')
     file.write(
             '''\
-# ========================================================================== #
+# @--------------------------------------------------------------------------@ #
+# |                                 Colors                                   | #
+# @--------------------------------------------------------------------------@ #
 
-# <-- Color Library --> #
+T_BLACK := \\033[30m
+T_RED := \\033[31m
+T_GREEN := \\033[32m
+T_YELLOW := \\033[33m
+T_BLUE := \\033[34m
+T_MAGENTA := \\033[35m
+T_CYAN := \\033[36m
+T_WHITE := \\033[37m
 
-# <-- Text Color --> #
-T_BLACK = \\033[30m
-T_RED = \\033[31m
-T_GREEN = \\033[32m
-T_YELLOW = \\033[33m
-T_BLUE = \\033[34m
-T_MAGENTA = \\033[35m
-T_CYAN = \\033[36m
-T_WHITE = \\033[37m
+BOLD := \\033[1m
+ITALIC := \\033[2m
+UNDERLINE := \\033[3m
+STRIKETHROUGH := \\033[4m
 
-# <-- Text Style --> #
-BOLD = \\033[1m
-ITALIC = \\033[2m
-UNDERLINE = \\033[3m
-STRIKETHROUGH = \\033[4m
+CLEAR_LINE := \\033[1F\\r\\033[2K
 
-# <-- Background Color --> #
-B_RED = \\033[31m
-B_BLACK = \\033[30m
-B_GREEN = \\033[32m
-B_YELLOW = \\033[33m
-B_BLUE = \\033[34m
-B_MAGENTA = \\033[35m
-B_CYAN = \\033[36m
-B_WHITE = \\033[37m
+RESET := \\033[0m
 
-# <-- Reset Everything --> #
-RESET = \\033[0m
+# @--------------------------------------------------------------------------@ #
+# |                                 Macros                                   | #
+# @--------------------------------------------------------------------------@ #
 
-# ========================================================================== #
+NAME := {}
 
-# <-- Library\'s Name --> #
-NAME = {}
+INCLUDE_DIR := include/
+SRC_DIR := src/
+UTILS_DIR := utils/
+OBJ_DIR := obj/
 
-# <-- Compilation Command --> #
-CC = gcc
+INCLUDE_FILES := {}.h
+SRC_FILES := {}.c
+UTILS_FILES := utils.c
 
-# <-- Compilation Flags --> #
-CFLAGS = -Wall -Wextra -Werror -I ./include
-
-# <-- Remove Command -->#
-RM = rm -rf
-
-# <-- Directories --> #
-SRC_DIR = src/
-UTILS_DIR = utils/
-OBJ_DIR = obj/
-
-# <-- Files --> #
-SRC_FILES = {}.c
-UTILS_FILES = utils.c
-
-# <-- Directories + Files --> #
+INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 UTILS = $(addprefix $(UTILS_DIR), $(UTILS_FILES))
 
-# <-- Objects --> #
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC)) \\
-        $(patsubst $(UTILS_DIR)%.c, $(OBJ_DIR)%.o, $(UTILS))
+ \t\t$(patsubst $(UTILS_DIR)%.c, $(OBJ_DIR)%.o, $(UTILS))
 
-# ========================================================================== #
+CC = clang
+CFLAGS := -Wall -Wextra -Werror
+CPPFLAGS := -I $(INCLUDE_DIR)
+LDFLAGS := 
+LDLIBS := 
 
-# <-- Main Target --> #
+RM := rm -rf
+
+# @--------------------------------------------------------------------------@ #
+# |                                Messages                                  | #
+# @--------------------------------------------------------------------------@ #
+
+COMPILE_MSG = @echo "$(CLEAR_LINE)$(T_WHITE)$(BOLD)Compiling $<...$(RESET)"
+OBJ_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(T_YELLOW)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)"
+OUTPUT_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)"
+CLEAN_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(T_YELLOW)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)"
+FCLEAN_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)"
+
+# @--------------------------------------------------------------------------@ #
+# |                                 Targets                                  | #
+# @--------------------------------------------------------------------------@ #
+
 all: $(NAME)
 
-# <-- Program/Library Creation --> #
 $(NAME): $(OBJ_DIR) $(OBJ)
-\t@echo \"✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)\"
-\t@# ar rcs $(NAME) $(OBJ) # Use this if you want to create a library
-\t@$(CC) $(OBJ) -o $(NAME) # Use this if you want to create a program
-\t@echo \"✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)\"
+\t$(OBJ_MSG)
+\t@$(CC) -o $(NAME) $(OBJ) $(LDFLAGS) $(LD_LIBS) # Use this if you want to create a program
+\t@#ar rcs $(NAME) $(OBJ) # Use this if you want to create a library
+\t$(OUTPUT_MSG)
 
-# <-- Object Directory Creation --> #
 $(OBJ_DIR):
 \t@mkdir -p $(OBJ_DIR)
 
-# <-- Objects Creation --> #
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
-\t@echo \"🔨 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)\"
-\t@$(CC) $(CFLAGS) -c $< -o $@
-\t@echo \"🧩 🦔 $(T_BLUE)$(BOLD)$@ $(RESET)$(T_GREEN)created!$(RESET)\"
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCLUDE)
+\t$(COMPILE_MSG)
+\t@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)%.o: $(UTILS_DIR)%.c
-\t@echo \"🔨 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)\"
-\t@$(CC) $(CFLAGS) -c $< -o $@
-\t@echo \"🧩 🦔 $(T_BLUE)$(BOLD)$@ $(RESET)$(T_GREEN)created!$(RESET)\"
+$(OBJ_DIR)%.o: $(UTILS_DIR)%.c $(INCLUDE)
+\t$(COMPILE_MSG)
+\t@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-# <-- Objects Destruction --> #
 clean:
 \t@$(RM) $(OBJ_DIR)
-\t@echo \"🗑️  🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)\"
+\t$(CLEAN_MSG)
 
-# <-- Clean Execution + {} Destruction --> #
 fclean: clean
 \t@$(RM) $(NAME) *.out
-\t@echo \"🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)\"
+\t$(FCLEAN_MSG)
 
-# <-- Fclean Execution + All Execution --> #
-re: fclean all
+re:
+\t@make -s fclean
+\t@make -s all
 
-# <-- Color testing --> #
-
-colortesting:
-\t@echo "$(T_BLACK)Black text"
-\t@echo "$(T_RED)Red text"
-\t@echo "$(T_GREEN)Green text"
-\t@echo "$(T_YELLOW)Yellow text"
-\t@echo "$(T_BLUE)Blue text"
-\t@echo "$(T_MAGENTA)Magenta text"
-\t@echo "$(T_CYAN)Cyan text"
-\t@echo "$(T_WHITE)White text$(RESET)"
-\t@echo "$(BOLD)"
-\t@echo "$(T_BLACK)Bold Black text"
-\t@echo "$(T_RED)Bold Red text"
-\t@echo "$(T_GREEN)Bold Green text"
-\t@echo "$(T_YELLOW)Bold Yellow text"
-\t@echo "$(T_BLUE)Bold Blue text"
-\t@echo "$(T_MAGENTA)Bold Magenta text"
-\t@echo "$(T_CYAN)Bold Cyan text"
-\t@echo "$(T_WHITE)Bold White text$(RESET)"
-
-# <-- Targets Declaration --> #
-.PHONY = all clean fclean re colortesting
-
-# ========================================================================== #
-'''.format(name, name, name))
+.PHONY: all clean fclean re
+'''.format(name, name, name, name))
     file.close
 
 # Main function
@@ -255,6 +239,7 @@ def main():
     username = "ribana-b"
     email = "ribana-b@student.42malaga.com"
     create_dirs()
+    project_name = project_name.replace(" ", "")
     c_main_template(create_header("{}.c".format(project_name), username, email), project_name)
     c_header_template(create_header("{}.h".format(project_name), username, email), project_name)
     c_utils_template(create_header("{}.c".format(project_name), username, email), project_name)
